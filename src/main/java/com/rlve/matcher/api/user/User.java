@@ -1,12 +1,9 @@
 package com.rlve.matcher.api.user;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
-import java.util.Date;
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @Data public class User {
@@ -15,8 +12,7 @@ import java.util.UUID;
     @Size(min=3, message = "Name should have at least 3 characters.")
     private String name;
 
-//    @Past(message = "Birth date must be in the past.")
-    private Date addingDate;
+    private ZonedDateTime addingDate;
 
     protected User() {
 
@@ -25,7 +21,7 @@ import java.util.UUID;
     public User(UUID id, String name) {
         this.id = id;
         this.name = name;
-        this.addingDate = new Date();
+        this.addingDate = ZonedDateTime.now();
     }
 
 }

@@ -2,6 +2,7 @@ package com.rlve.matcher.api.user;
 
 import org.springframework.stereotype.Component;
 
+import java.time.ZonedDateTime;
 import java.util.*;
 
 @Component
@@ -20,7 +21,7 @@ public class UserDaoService {
 
     public User save(User user) {
         if (user.getId() == null) user.setId(UUID.randomUUID());
-        user.setAddingDate(new Date());
+        user.setAddingDate(ZonedDateTime.now());
         users.add(user);
         return user;
     }
