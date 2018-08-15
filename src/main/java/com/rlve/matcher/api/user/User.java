@@ -10,20 +10,22 @@ import java.util.Date;
 import java.util.UUID;
 
 @Data public class User {
-    private UUID id = UUID.randomUUID();
+    private UUID id;
 
     @Size(min=3, message = "Name should have at least 3 characters.")
     private String name;
 
 //    @Past(message = "Birth date must be in the past.")
-    private Date addingDate = new Date();
+    private Date addingDate;
 
-    public User() {
+    protected User() {
 
     }
 
-    public User(String name) {
+    public User(UUID id, String name) {
+        this.id = id;
         this.name = name;
+        this.addingDate = new Date();
     }
 
 }

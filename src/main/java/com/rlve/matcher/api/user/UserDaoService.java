@@ -9,9 +9,9 @@ public class UserDaoService {
     private static List<User> users = new ArrayList<>();
 
     static {
-        users.add(new User("Adammmm"));
-        users.add(new User("Eve"));
-        users.add(new User("Jack"));
+        users.add(new User(UUID.fromString("7039d273-8e53-4345-b218-d5058b7edd70"), "Adammmm"));
+        users.add(new User(UUID.fromString("2054d7f8-8b6d-4b85-aae8-e8f8301e4187"), "Eve"));
+        users.add(new User(UUID.fromString("36a88684-b377-41fd-8957-f8db3d91602a"), "Jack"));
     }
 
     public List<User> findAll() {
@@ -19,13 +19,21 @@ public class UserDaoService {
     }
 
     public User save(User user) {
+        if (user.getId() == null) user.setId(UUID.randomUUID());
+        user.setAddingDate(new Date());
         users.add(user);
         return user;
     }
 
     public User findOne(UUID id) {
-        for (User user : users) {
-            if (user.getId() == id) return user;
+        Iterator<User> iterator = users.iterator();
+
+        while (iterator.hasNext()) {
+            User user = iterator.next();
+
+            if (user.getId().equals(id)) {
+                return user;
+            }
         }
 
         return null;
@@ -37,7 +45,7 @@ public class UserDaoService {
         while (iterator.hasNext()) {
             User user = iterator.next();
 
-            if (user.getId() == id) {
+            if (user.getId().equals(id)) {
                 iterator.remove();
                 return user;
             }
@@ -45,5 +53,17 @@ public class UserDaoService {
 
         return null;
 
+    }
+
+    public void updateById(UUID id, User updatedUser) {
+        Iterator<User> iterator = users.iterator();
+
+        while (iterator.hasNext()) {
+            User user = iterator.next();
+
+            if (user.getId().equals(id)) {
+                user.setName(updatedUser.getName());
+            }
+        }
     }
 }

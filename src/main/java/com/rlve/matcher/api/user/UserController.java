@@ -30,6 +30,7 @@ public class UserController {
         return user;
     }
 
+
     @PostMapping("/users")
     public ResponseEntity<Object> addUser(@Valid @RequestBody User user) {
         User createdUser = service.save(user);
@@ -42,6 +43,15 @@ public class UserController {
         return ResponseEntity.created(location).build();
     }
 
+    @PutMapping("/users/{id}")
+    public void updateUser(@PathVariable UUID id, @Valid @RequestBody User updatedUser) {
+        User user = service.findOne(id);
+        service.updateById(id, updatedUser);
+
+        if (user == null)
+            throw new UserNotFoundException("id: " + id);
+    }
+
     @DeleteMapping("/users/{id}")
     public void deleteUser(@PathVariable UUID id) {
         User user = service.deleteById(id);
@@ -49,6 +59,5 @@ public class UserController {
         if (user == null)
             throw new UserNotFoundException("id: " + id);
     }
-
 
 }
