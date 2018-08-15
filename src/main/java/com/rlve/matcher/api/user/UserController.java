@@ -1,0 +1,54 @@
+package com.rlve.matcher.api.user;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import javax.validation.Valid;
+import java.net.URI;
+import java.util.List;
+import java.util.UUID;
+
+@RestController
+public class UserController {
+    @Autowired
+    private UserDaoService service;
+
+    @GetMapping("/users")
+    public List<User> getAllUsers() {
+        return service.findAll();
+    }
+
+    @GetMapping("/users/{id}")
+    public User getUser(@PathVariable UUID id) {
+        User user = service.findOne(id);
+
+        if (user == null)
+            throw new UserNotFoundException("id: " + id);
+
+        return user;
+    }
+
+    @PostMapping("/users")
+    public ResponseEntity<Object> addUser(@Valid @RequestBody User user) {
+        User createdUser = service.save(user);
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(createdUser.getId()).toUri();
+
+        return ResponseEntity.created(location).build();
+    }
+
+    @DeleteMapping("/users/{id}")
+    public void deleteUser(@PathVariable UUID id) {
+        User user = service.deleteById(id);
+
+        if (user == null)
+            throw new UserNotFoundException("id: " + id);
+    }
+
+
+}
