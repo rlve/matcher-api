@@ -1,5 +1,6 @@
 package com.rlve.matcher.api.exceptions;
 
+import com.rlve.matcher.api.match.SquadException;
 import com.rlve.matcher.api.user.UserNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -33,6 +34,14 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
                 new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
 
         return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(SquadException.class)
+    public final ResponseEntity<Object> handleSquadIsFullException(SquadException ex, WebRequest request) {
+        var exceptionResponse =
+                new ExceptionResponse(new Date(), ex.getMessage(), request.getDescription(false));
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.CONFLICT);
     }
 
     @Override

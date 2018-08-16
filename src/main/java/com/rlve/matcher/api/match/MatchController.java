@@ -42,6 +42,23 @@ public class MatchController {
         return ResponseEntity.created(location).build();
     }
 
+    @PostMapping("/matches/{id}/sign/{userId}")
+    public ResponseEntity<Object> signUser(@PathVariable UUID id, @PathVariable UUID userId) {
+        Match match = service.findOne(id);
+
+        if (match == null)
+            throw new MatchNotFoundException("id: " + id);
+
+        MatchStates.SIGN result = service.signUser(id, userId);
+        String message = MatchStates.getMessage(result);
+
+        if (result == MatchStates.SIGN.IN_RESERVES || result == MatchStates.SIGN.IN_SQUAD ) {
+            throw new SquadException(String.format("%s id: %s", message, id));
+        }
+
+        return ResponseEntity.ok().body(message);
+    }
+
     @PutMapping("/matches/{id}")
     public void updateMatch(@PathVariable UUID id, @Valid @RequestBody Match updatedMatch) {
         Match match = service.findOne(id);

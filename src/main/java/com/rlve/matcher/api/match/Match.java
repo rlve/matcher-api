@@ -5,7 +5,7 @@ import lombok.Data;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.Size;
 import java.time.ZonedDateTime;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.UUID;
 
 @Data public class Match {
@@ -18,22 +18,24 @@ import java.util.UUID;
     @Future(message = "Details date must be in the future.")
     private ZonedDateTime matchDate;
 
-    private Integer maxPlayers;
-    private Integer minPlayers;
+    private Integer maxPlayers = 15;
+    private Integer minPlayers = 10;
     private Integer cost;
 
-    private List<UUID> squad;
-    private List<UUID> reserves;
+    private ArrayList<UUID> squad = new ArrayList<UUID>();
+    private ArrayList<UUID> reserves = new ArrayList<UUID>();
 
     protected Match() {
 
     }
 
-    public Match(UUID id, String place, ZonedDateTime matchDate) {
+    public Match(UUID id, String place, ZonedDateTime matchDate, Integer maxPlayers) {
         this.id = id;
         this.place = place;
         this.matchDate = matchDate;
-        this.addingDate = ZonedDateTime.now();
-    }
+        this.maxPlayers = maxPlayers;
 
+        this.addingDate = ZonedDateTime.now();
+
+    }
 }
