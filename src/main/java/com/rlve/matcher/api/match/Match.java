@@ -5,6 +5,7 @@ import lombok.Data;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.Size;
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Data public class Match {
@@ -14,12 +15,15 @@ import java.util.UUID;
     @Size(min=3, message = "Place name should have at least 3 characters.")
     private String place;
 
-    @Future(message = "Match date must be in the future.")
+    @Future(message = "Details date must be in the future.")
     private ZonedDateTime matchDate;
 
     private Integer maxPlayers;
     private Integer minPlayers;
     private Integer cost;
+
+    private List<UUID> squad;
+    private List<UUID> reserves;
 
     protected Match() {
 

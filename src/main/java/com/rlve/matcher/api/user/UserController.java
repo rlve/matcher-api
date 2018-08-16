@@ -15,6 +15,11 @@ public class UserController {
     @Autowired
     private UserDaoService service;
 
+    @GetMapping("/")
+    public String welcome() {
+        return "Welcome in matcher-api.";
+    }
+
     @GetMapping("/users")
     public List<User> getAllUsers() {
         return service.findAll();
