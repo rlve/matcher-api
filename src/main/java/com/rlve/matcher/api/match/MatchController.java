@@ -59,6 +59,23 @@ public class MatchController {
         return ResponseEntity.ok().body(message);
     }
 
+    @PostMapping("/matches/{id}/remove/{userId}")
+    public ResponseEntity<Object> removeUser(@PathVariable UUID id, @PathVariable UUID userId) {
+        Match match = service.findOne(id);
+
+        if (match == null)
+            throw new MatchNotFoundException("id: " + id);
+
+        MatchStates.SIGN result = service.removeUserFromMatch(id, userId);
+        String message = MatchStates.getMessage(result);
+
+        if (result == MatchStates.SIGN.NO_USER) {
+            throw new SquadException(String.format("%s id: %s", message, id));
+        }
+
+        return ResponseEntity.ok().body(message);
+    }
+
     @PutMapping("/matches/{id}")
     public void updateMatch(@PathVariable UUID id, @Valid @RequestBody Match updatedMatch) {
         Match match = service.findOne(id);

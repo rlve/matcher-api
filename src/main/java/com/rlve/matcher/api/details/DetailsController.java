@@ -16,32 +16,33 @@ public class DetailsController {
     private DetailsDaoService service;
 
     @GetMapping("/matches/{matchId}/details")
-    public List<Details> getAllDetailsByMatchId(@PathVariable UUID matchId) {
+    public List<DetailsEnriched> getAllDetailsByMatchId(@PathVariable UUID matchId) {
         return service.findAllByMatchId(matchId);
     }
 
     @GetMapping("/users/{userId}/details")
-    public List<Details> getAllDetailsByUserId(@PathVariable UUID userId) {
+    public List<DetailsEnriched> getAllDetailsByUserId(@PathVariable UUID userId) {
         return service.findAllByUserId(userId);
     }
 
     @GetMapping("/details/{id}")
-    public Details getOneDetails(@PathVariable UUID id) {
-        Details details = service.findOne(id);
+    public DetailsEnriched getOneDetails(@PathVariable UUID id) {
+        DetailsEnriched detailsEnriched = service.findOne(id);
 
-        if (details == null)
+        if (detailsEnriched == null)
             throw new DetailsNotFoundException("id: " + id);
 
-        return details;
+        return detailsEnriched;
     }
 
     @PutMapping("/details/{id}")
     public void updateDetails(@PathVariable UUID id, @Valid @RequestBody Details updatedDetails) {
-        Details details = service.findOne(id);
-        service.updateById(id, updatedDetails);
+        DetailsEnriched detailsEnriched = service.findOne(id);
 
-        if (details == null)
+        if (detailsEnriched == null)
             throw new DetailsNotFoundException("id: " + id);
+
+        service.updateById(id, updatedDetails);
     }
 
 }

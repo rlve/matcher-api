@@ -1,5 +1,10 @@
 package com.rlve.matcher.api.details;
 
+import com.rlve.matcher.api.match.Match;
+import com.rlve.matcher.api.match.MatchDaoService;
+import com.rlve.matcher.api.user.User;
+import com.rlve.matcher.api.user.UserDaoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.ZoneId;
@@ -13,6 +18,12 @@ import java.util.UUID;
 public class DetailsDaoService {
     private static List<Details> allDetails = new ArrayList<>();
 
+    @Autowired
+    private MatchDaoService matchService;
+
+    @Autowired
+    private UserDaoService userService;
+
     static {
         ZoneId zoneId = ZoneId.of("UTC+1");
         allDetails.add(new Details(UUID.fromString("c8e3cf4e-df16-4bff-8bd7-f3b8eea9880c"), UUID.fromString("2473d25f-eafe-49c5-b966-d834c6adbdbe"), UUID.fromString("7039d273-8e53-4345-b218-d5058b7edd70")));
@@ -22,44 +33,44 @@ public class DetailsDaoService {
         allDetails.add(new Details(UUID.fromString("75b381f1-d645-4537-8229-217495dc029e"), UUID.fromString("642fd0a5-866f-4f94-9cce-9e5ddde6451a"), UUID.fromString("36a88684-b377-41fd-8957-f8db3d91602a")));
     }
 
-    public List<Details> findAllByMatchId(UUID matchId) {
+    public List<DetailsEnriched> findAllByMatchId(UUID matchId) {
         Iterator<Details> iterator = allDetails.iterator();
-        List<Details> returnList = new ArrayList<>();
+        List<DetailsEnriched> returnList = new ArrayList<>();
 
         while (iterator.hasNext()) {
             Details details = iterator.next();
 
             if (details.getMatchId().equals(matchId)) {
-                returnList.add(details);
+                returnList.add(this.enrichDetails(details));
             }
         }
 
         return returnList;
     }
 
-    public List<Details> findAllByUserId(UUID userId) {
+    public List<DetailsEnriched> findAllByUserId(UUID userId) {
         Iterator<Details> iterator = allDetails.iterator();
-        List<Details> returnList = new ArrayList<>();
+        List<DetailsEnriched> returnList = new ArrayList<>();
 
         while (iterator.hasNext()) {
             Details details = iterator.next();
 
             if (details.getUserId().equals(userId)) {
-                returnList.add(details);
+                returnList.add(this.enrichDetails(details));
             }
         }
 
         return returnList;
     }
 
-    public Details findOne(UUID id) {
+    public DetailsEnriched findOne(UUID id) {
         Iterator<Details> iterator = allDetails.iterator();
 
         while (iterator.hasNext()) {
             Details details = iterator.next();
 
             if (details.getId().equals(id)) {
-                return details;
+                return this.enrichDetails(details);
             }
         }
         return null;
@@ -78,5 +89,24 @@ public class DetailsDaoService {
                     details.setUserPaid(updatedDetails.getUserPaid());
             }
         }
+    }
+
+    public DetailsEnriched enrichDetails(Details details) {
+        User user = userService.findOne(details.getUserId());
+        Match match = matchService.findOne(details.getMatchId());
+
+        DetailsEnriched enriched = new DetailsEnriched();
+        enriched.setDetailsId(details.getId());
+        enriched.setMatchId(details.getMatchId());
+        enriched.setUserId(details.getUserId());
+        enriched.setUserPresent(details.getUserPresent());
+        enriched.setUserPaid(details.getUserPaid());
+
+        enriched.setUserName(user.getName());
+
+        enriched.setMatchDate(match.getMatchDate());
+        enriched.setMatchPlace(match.getPlace());
+
+        return enriched;
     }
 }

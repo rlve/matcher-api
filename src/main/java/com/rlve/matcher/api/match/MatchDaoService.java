@@ -120,4 +120,36 @@ public class MatchDaoService {
 
         return status;
     }
+
+    public MatchStates.SIGN removeUserFromMatch(UUID id, UUID userId) {
+        Iterator<Match> iterator = matches.iterator();
+        MatchStates.SIGN status = MatchStates.SIGN.OK_REMOVED;
+
+        while (iterator.hasNext()) {
+            Match match = iterator.next();
+
+            if (match.getId().equals(id)) {
+
+                if (match.getSquad().contains(userId)) {
+                    match.getSquad().remove(userId);
+
+                    if (match.getSquad().size() < match.getMaxPlayers()) {
+                        if (match.getReserves().size() > 0) {
+                            UUID fromReserves = match.getReserves().get(0);
+                            match.getSquad().add(fromReserves);
+                            match.getReserves().remove(fromReserves);
+                        }
+                    }
+                } else {
+                    if (match.getReserves().contains(userId)) {
+                        match.getReserves().remove(id);
+                    } else {
+                        status = MatchStates.SIGN.NO_USER;
+                    }
+                }
+            }
+        }
+
+        return status;
+    }
 }
