@@ -1,9 +1,6 @@
 package com.rlve.matcher.api.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Data;
-import lombok.ToString;
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
@@ -14,8 +11,9 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @NodeEntity
-@Data public class User {
+public class User {
 
     @Id
     @GeneratedValue
@@ -26,10 +24,10 @@ import java.util.List;
 
     private Instant addingDate;
 
+
     @JsonIgnoreProperties("user")
     @Relationship(type = "PLAYED_IN")
-    private List<Match> matches = new ArrayList<>();
-//    private List<Details> details = new ArrayList<>();
+    private List<Details> details = new ArrayList<>();
 
     protected User() {
 
@@ -40,4 +38,19 @@ import java.util.List;
         this.addingDate = Instant.now();
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Instant getAddingDate() {
+        return addingDate;
+    }
+
+    public List<Details> getDetails() {
+        return details;
+    }
 }

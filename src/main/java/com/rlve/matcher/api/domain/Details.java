@@ -1,16 +1,11 @@
 package com.rlve.matcher.api.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import org.neo4j.ogm.annotation.*;
 
 import java.time.Instant;
 
 @RelationshipEntity(type = "PLAYED_IN")
-@Data public class Details {
+public class Details {
 
     @Id
     @GeneratedValue
@@ -36,12 +31,31 @@ import java.time.Instant;
         this.user = user;
         this.addingDate = Instant.now();
 
-//        this.match.getDetails().add(this);
-//        this.user.getMatches().add(match);
+        this.match.getDetails().add(this);
+        this.user.getDetails().add(this);
     }
 
-    @Override
-    public String toString() {
-        return "Details{}";
+    public Long getId() {
+        return id;
+    }
+
+    public Match getMatch() {
+        return match;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public Instant getAddingDate() {
+        return addingDate;
+    }
+
+    public Boolean getUserPresent() {
+        return userPresent;
+    }
+
+    public Boolean getUserPaid() {
+        return userPaid;
     }
 }
