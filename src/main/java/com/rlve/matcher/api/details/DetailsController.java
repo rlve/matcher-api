@@ -10,7 +10,6 @@ import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
-@RestController
 public class DetailsController {
     @Autowired
     private DetailsDaoService service;
