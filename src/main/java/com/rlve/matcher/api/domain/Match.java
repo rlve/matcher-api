@@ -6,12 +6,13 @@ import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.validation.constraints.Future;
 import javax.validation.constraints.Size;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @NodeEntity
 public class Match {
@@ -20,6 +21,7 @@ public class Match {
     @Id
     @GeneratedValue
     private Long id;
+    @CreatedDate
     private Instant addingDate;
 
     @Size(min=3, message = "Place name should have at least 3 characters.")
@@ -34,10 +36,10 @@ public class Match {
 
     @JsonIgnoreProperties("match")
     @Relationship(type = "PLAYED_IN", direction = Relationship.INCOMING)
-    private List<Details> details = new ArrayList<>();
+    private Set<Details> details = new HashSet<>();
 
-    private ArrayList<Long> squad = new ArrayList<>();
-    private ArrayList<Long> reserves = new ArrayList<>();
+    private Set<Long> squad = new HashSet<>();
+    private Set<Long> reserves = new HashSet<>();
 
     protected Match() {
 
@@ -78,15 +80,15 @@ public class Match {
         return cost;
     }
 
-    public List<Details> getDetails() {
+    public Set<Details> getDetails() {
         return details;
     }
 
-    public ArrayList<Long> getSquad() {
+    public Set<Long> getSquad() {
         return squad;
     }
 
-    public ArrayList<Long> getReserves() {
+    public Set<Long> getReserves() {
         return reserves;
     }
 }

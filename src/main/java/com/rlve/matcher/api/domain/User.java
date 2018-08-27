@@ -5,11 +5,12 @@ import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.validation.constraints.Size;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @NodeEntity
@@ -22,15 +23,16 @@ public class User {
     @Size(min=3, message = "Name should have at least 3 characters.")
     private String name;
 
+    @CreatedDate
     private Instant addingDate;
 
 
     @JsonIgnoreProperties("user")
     @Relationship(type = "PLAYED_IN")
-    private List<Details> details = new ArrayList<>();
+    private Set<Details> details = new HashSet<>();
 
     protected User() {
-
+        this.addingDate = Instant.now();
     }
 
     public User(String name) {
@@ -50,7 +52,7 @@ public class User {
         return addingDate;
     }
 
-    public List<Details> getDetails() {
+    public Set<Details> getDetails() {
         return details;
     }
 }

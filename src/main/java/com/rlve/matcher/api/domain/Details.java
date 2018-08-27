@@ -1,6 +1,7 @@
 package com.rlve.matcher.api.domain;
 
 import org.neo4j.ogm.annotation.*;
+import org.springframework.data.annotation.CreatedDate;
 
 import java.time.Instant;
 
@@ -17,14 +18,18 @@ public class Details {
     @StartNode
     private User user;
 
+    @CreatedDate
     private Instant addingDate;
 
-    private Boolean userPresent;
+    private Boolean inSquad = Boolean.FALSE;
+    private Boolean inReserves = Boolean.FALSE;
+    private Boolean userPresent = Boolean.TRUE;
     private Boolean userPaid;
 
     protected Details() {
 
     }
+
 
     public Details(Match match, User user) {
         this.match = match;
@@ -57,5 +62,29 @@ public class Details {
 
     public Boolean getUserPaid() {
         return userPaid;
+    }
+
+    public Boolean getInSquad() {
+        return inSquad;
+    }
+
+    public Boolean getInReserves() {
+        return inReserves;
+    }
+
+    public void setInSquad(Boolean inSquad) {
+        this.inSquad = inSquad;
+    }
+
+    public void setInReserves(Boolean inReserves) {
+        this.inReserves = inReserves;
+    }
+
+    public void setUserPresent(Boolean userPresent) {
+        this.userPresent = userPresent;
+    }
+
+    public void setUserPaid(Boolean userPaid) {
+        this.userPaid = userPaid;
     }
 }

@@ -6,8 +6,11 @@ import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
+import java.util.Optional;
+import java.util.Set;
+
 @RepositoryRestResource(collectionResourceRel = "users", path = "users")
 public interface UserRepository extends Neo4jRepository<User, Long> {
 
-    <S extends User> S save(S entity);
+    Set<User> findAllByNameLike(@Param("name") String name);
 }
