@@ -3,7 +3,8 @@ package com.rlve.matcher.api.services;
 import com.rlve.matcher.api.domain.Details;
 import com.rlve.matcher.api.domain.Match;
 import com.rlve.matcher.api.domain.User;
-import com.rlve.matcher.api.match.MatchStates;
+import com.rlve.matcher.api.domain.MatchState;
+import com.rlve.matcher.api.exceptions.UserNotFoundException;
 import com.rlve.matcher.api.repositories.DetailsRepository;
 import com.rlve.matcher.api.repositories.MatchRepository;
 import com.rlve.matcher.api.repositories.UserRepository;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.Optional;
 
 @Service
@@ -40,49 +42,64 @@ public class MatchService {
         return matchRepository.findById(id);
     }
 
-    public void sign() {
-        Match match = this.findById(97L).orElseThrow();
-        User user = userService.findById(105L).orElseThrow();
 
-        Details details = new Details(match, user);
+    public void signUserToMatch(Long userId, Long matchId) {
+        User user = userService.findById(userId).orElseThrow();
+        Match match = this.findById(matchId).orElseThrow();
 
+        Details details = detailsRepository.findByUserIdAndMatchId(user.getId(), match.getId())
+                                            .orElse(new Details(match, user));
 
-        switch (this.resolveSquad(match, user.getId())) {
-            case OK:
-                details.setInSquad(Boolean.TRUE);
-                break;
-            case OK_RESERVES:
-                details.setInReserves(Boolean.TRUE);
-                break;
-            default:
-                break;
-        }
-
-
-        detailsRepository.save(details);
-
-    }
-
-    public MatchStates.SIGN resolveSquad(Match match, Long userId) {
-        MatchStates.SIGN status;
+        MatchState status = new MatchState();
 
         if (match.getSquad().contains(userId)) {
-            status = MatchStates.SIGN.IN_SQUAD;
+            status.setSignState(MatchState.SIGN.IN_SQUAD);
         } else {
             if (match.getSquad().size() >= match.getMaxPlayers()) {
                 if (match.getReserves().contains(userId)) {
-                    status = MatchStates.SIGN.IN_RESERVES;
+                    status.setSignState(MatchState.SIGN.IN_RESERVES);
                 } else {
+                    status.setSignState(MatchState.SIGN.OK_RESERVES);
+                    details.setInReserves(Boolean.TRUE);
                     match.getReserves().add(userId);
-                    status = MatchStates.SIGN.OK_RESERVES;
                 }
             } else {
+                status.setSignState(MatchState.SIGN.OK);
+                details.setInSquad(Boolean.TRUE);
                 match.getSquad().add(userId);
-                status = MatchStates.SIGN.OK;
             }
         }
 
-        return status;
+        if (details.getId() == null)
+            detailsRepository.save(details);
+    }
+
+    public void removeUserFromMatch(Long userId, Long matchId) {
+        User user = userService.findById(userId).orElseThrow();
+        Match match = this.findById(matchId).orElseThrow();
+
+        Optional<Details> details = detailsRepository.findByUserIdAndMatchId(user.getId(), match.getId());
+
+        if (details.isPresent()) {
+            match.getDetails().remove(details.get());
+
+            if (details.get().getInSquad()) {
+                match.getSquad().remove(userId);
+
+                if (match.getSquad().size() < match.getMaxPlayers()) {
+                    if (match.getReserves().size() > 0) {
+                        Long fromReserves = match.getReserves().iterator().next();
+                        match.getSquad().add(fromReserves);
+                        match.getReserves().remove(fromReserves);
+                    }
+                }
+            } else {
+                    match.getReserves().remove(userId);
+            }
+
+            matchRepository.save(match);
+        }
+
     }
 
 //    public void AddData(){
@@ -90,27 +107,16 @@ public class MatchService {
 //        ZonedDateTime time = ZonedDateTime.of(2018, 9, 9, 18, 30, 0, 0, zoneId);
 //
 //        Match match1 = new Match( "Pszczelna", time.plusDays(3).toInstant(),14);
-//        Match match2 = new Match( "Strakowa", time.plusDays(3).plusHours(1).toInstant(),20);
-//        Match match3 = new Match( "Bronowianka", time.plusDays(3).minusHours(2).toInstant(),10);
+
 //
 //        User user1 = new User("Jack");
-//        User user2 = new User("Adam");
-//        User user3 = new User("Mike");
+
 //
 //        Details details1 = new Details(match1, user1);
-//        Details details2 = new Details(match1, user2);
-//        Details details3 = new Details(match1, user3);
-//
-//        Details details4 = new Details(match2, user1);
-//        Details details5 = new Details(match2, user2);
-//        Details details6 = new Details(match3, user3);
+
 //
 //        detailsRepository.save(details1);
-//        detailsRepository.save(details2);
-//        detailsRepository.save(details3);
-//        detailsRepository.save(details4);
-//        detailsRepository.save(details5);
-//        detailsRepository.save(details6);
+
 //    }
 
 

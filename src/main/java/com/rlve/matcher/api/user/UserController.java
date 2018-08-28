@@ -1,5 +1,6 @@
 package com.rlve.matcher.api.user;
 
+import com.rlve.matcher.api.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

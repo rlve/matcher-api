@@ -55,4 +55,6 @@ public class User {
     public Set<Details> getDetails() {
         return details;
     }
+
+
 }

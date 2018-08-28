@@ -11,8 +11,7 @@ import org.springframework.data.annotation.CreatedDate;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.Size;
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @NodeEntity
 public class Match {
@@ -38,11 +37,11 @@ public class Match {
     @Relationship(type = "PLAYED_IN", direction = Relationship.INCOMING)
     private Set<Details> details = new HashSet<>();
 
-    private Set<Long> squad = new HashSet<>();
-    private Set<Long> reserves = new HashSet<>();
+    private List<Long> squad = new ArrayList<>();
+    private List<Long> reserves = new ArrayList<>();
 
     protected Match() {
-
+        this.addingDate = Instant.now();
     }
 
     public Match( String place, Instant matchDate, Integer maxPlayers) {
@@ -84,11 +83,11 @@ public class Match {
         return details;
     }
 
-    public Set<Long> getSquad() {
+    public List<Long> getSquad() {
         return squad;
     }
 
-    public Set<Long> getReserves() {
+    public List<Long> getReserves() {
         return reserves;
     }
 }

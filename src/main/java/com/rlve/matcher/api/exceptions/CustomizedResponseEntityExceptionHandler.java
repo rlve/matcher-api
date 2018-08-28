@@ -1,7 +1,5 @@
 package com.rlve.matcher.api.exceptions;
 
-import com.rlve.matcher.api.match.SquadException;
-import com.rlve.matcher.api.user.UserNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,5 +1,8 @@
 package com.rlve.matcher.api.match;
 
+import com.rlve.matcher.api.domain.MatchState;
+import com.rlve.matcher.api.exceptions.MatchNotFoundException;
+import com.rlve.matcher.api.exceptions.SquadException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -48,10 +51,10 @@ public class old_MatchController {
         if (match == null)
             throw new MatchNotFoundException("id: " + id);
 
-        MatchStates.SIGN result = service.signUser(id, userId);
-        String message = MatchStates.getMessage(result);
+        MatchState.SIGN result = service.signUser(id, userId);
+        String message = MatchState.getMessage(result);
 
-        if (result == MatchStates.SIGN.IN_RESERVES || result == MatchStates.SIGN.IN_SQUAD ) {
+        if (result == MatchState.SIGN.IN_RESERVES || result == MatchState.SIGN.IN_SQUAD ) {
             throw new SquadException(String.format("%s id: %s", message, id));
         }
 
@@ -65,10 +68,10 @@ public class old_MatchController {
         if (match == null)
             throw new MatchNotFoundException("id: " + id);
 
-        MatchStates.SIGN result = service.removeUserFromMatch(id, userId);
-        String message = MatchStates.getMessage(result);
+        MatchState.SIGN result = service.removeUserFromMatch(id, userId);
+        String message = MatchState.getMessage(result);
 
-        if (result == MatchStates.SIGN.NO_USER) {
+        if (result == MatchState.SIGN.NO_USER) {
             throw new SquadException(String.format("%s id: %s", message, id));
         }
 

@@ -1,4 +1,4 @@
-package com.rlve.matcher.api.details;
+package com.rlve.matcher.api.domain;
 
 import lombok.Data;
 
@@ -20,7 +20,7 @@ public class DetailsEnriched {
     private String matchPlace;
     private ZonedDateTime matchDate;
 
-    protected DetailsEnriched() {
+    public DetailsEnriched() {
 
     }
 

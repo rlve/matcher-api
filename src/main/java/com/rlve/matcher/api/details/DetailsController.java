@@ -1,12 +1,11 @@
 package com.rlve.matcher.api.details;
 
+import com.rlve.matcher.api.domain.DetailsEnriched;
+import com.rlve.matcher.api.exceptions.DetailsNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
-import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,7 +34,7 @@ public class DetailsController {
     }
 
     @PutMapping("/details/{id}")
-    public void updateDetails(@PathVariable UUID id, @Valid @RequestBody Details updatedDetails) {
+    public void updateDetails(@PathVariable UUID id, @Valid @RequestBody old_Details updatedDetails) {
         DetailsEnriched detailsEnriched = service.findOne(id);
 
         if (detailsEnriched == null)

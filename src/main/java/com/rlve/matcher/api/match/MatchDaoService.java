@@ -1,8 +1,8 @@
 package com.rlve.matcher.api.match;
 
+import com.rlve.matcher.api.domain.MatchState;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.*;
@@ -91,9 +91,9 @@ public class MatchDaoService {
         return message;
     }
 
-    public MatchStates.SIGN signUser(UUID id, UUID userId) {
+    public MatchState.SIGN signUser(UUID id, UUID userId) {
         Iterator<Match> iterator = matches.iterator();
-        MatchStates.SIGN status = MatchStates.SIGN.OK;
+        MatchState.SIGN status = MatchState.SIGN.OK;
 
         while (iterator.hasNext()) {
             Match match = iterator.next();
@@ -101,18 +101,18 @@ public class MatchDaoService {
             if (match.getId().equals(id)) {
 
                 if (match.getSquad().contains(userId)) {
-                    status = MatchStates.SIGN.IN_SQUAD;
+                    status = MatchState.SIGN.IN_SQUAD;
                 } else {
                     if (match.getSquad().size() >= match.getMaxPlayers()) {
                         if (match.getReserves().contains(userId)) {
-                            status = MatchStates.SIGN.IN_RESERVES;
+                            status = MatchState.SIGN.IN_RESERVES;
                         } else {
                             match.getReserves().add(userId);
-                            status = MatchStates.SIGN.OK_RESERVES;
+                            status = MatchState.SIGN.OK_RESERVES;
                         }
                     } else {
                         match.getSquad().add(userId);
-                        status = MatchStates.SIGN.OK;
+                        status = MatchState.SIGN.OK;
                     }
                 }
             }
@@ -121,9 +121,9 @@ public class MatchDaoService {
         return status;
     }
 
-    public MatchStates.SIGN removeUserFromMatch(UUID id, UUID userId) {
+    public MatchState.SIGN removeUserFromMatch(UUID id, UUID userId) {
         Iterator<Match> iterator = matches.iterator();
-        MatchStates.SIGN status = MatchStates.SIGN.OK_REMOVED;
+        MatchState.SIGN status = MatchState.SIGN.OK_REMOVED;
 
         while (iterator.hasNext()) {
             Match match = iterator.next();
@@ -144,7 +144,7 @@ public class MatchDaoService {
                     if (match.getReserves().contains(userId)) {
                         match.getReserves().remove(id);
                     } else {
-                        status = MatchStates.SIGN.NO_USER;
+                        status = MatchState.SIGN.NO_USER;
                     }
                 }
             }

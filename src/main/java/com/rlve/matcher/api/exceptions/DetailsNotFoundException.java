@@ -1,4 +1,4 @@
-package com.rlve.matcher.api.details;
+package com.rlve.matcher.api.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

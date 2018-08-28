@@ -18,7 +18,6 @@ public class Details {
     @StartNode
     private User user;
 
-    @CreatedDate
     private Instant addingDate;
 
     private Boolean inSquad = Boolean.FALSE;
@@ -26,9 +25,11 @@ public class Details {
     private Boolean userPresent = Boolean.TRUE;
     private Boolean userPaid;
 
-    protected Details() {
+    public Details() {
 
     }
+
+
 
 
     public Details(Match match, User user) {
@@ -86,5 +87,13 @@ public class Details {
 
     public void setUserPaid(Boolean userPaid) {
         this.userPaid = userPaid;
+    }
+
+    public void setMatch(Match match) {
+        this.match = match;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

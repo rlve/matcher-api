@@ -1,8 +1,26 @@
-package com.rlve.matcher.api.match;
+package com.rlve.matcher.api.domain;
 
-public class MatchStates {
+public class MatchState {
+    private SIGN signState;
+
+    public MatchState() {
+    }
+
+    public MatchState(SIGN state) {
+        this.signState = state;
+    }
+
+
+    public SIGN getSignState() {
+        return signState;
+    }
+
+    public void setSignState(SIGN signState) {
+        this.signState = signState;
+    }
+
     public enum SIGN {
-        OK, IN_SQUAD, IN_RESERVES, OK_RESERVES, OK_REMOVED, NO_USER
+        OK, IN_SQUAD, IN_RESERVES, OK_RESERVES, OK_REMOVED, NO_USER;
     }
 
     static public String getMessage(SIGN state) {

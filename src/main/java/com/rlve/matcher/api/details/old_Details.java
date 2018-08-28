@@ -5,7 +5,7 @@ import lombok.Data;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
-@Data public class Details {
+@Data public class old_Details {
     private UUID id;
     private UUID matchId;
     private UUID userId;
@@ -14,11 +14,11 @@ import java.util.UUID;
     private Boolean userPresent;
     private Boolean userPaid;
 
-    protected Details() {
+    protected old_Details() {
 
     }
 
-    public Details(UUID id, UUID matchId, UUID userId) {
+    public old_Details(UUID id, UUID matchId, UUID userId) {
         this.id = id;
         this.matchId = matchId;
         this.userId = userId;

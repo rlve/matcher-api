@@ -8,6 +8,4 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 @RepositoryRestResource(collectionResourceRel = "matches", path = "matches")
 public interface MatchRepository extends Neo4jRepository<Match, Long> {
     Match findByPlace(@Param("place") String place);
-
-    <S extends Match> S save(S entity);
 }
