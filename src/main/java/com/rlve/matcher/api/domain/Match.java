@@ -37,8 +37,8 @@ public class Match {
     @Relationship(type = "PLAYED_IN", direction = Relationship.INCOMING)
     private Set<Details> details = new HashSet<>();
 
-    private List<Long> squad = new ArrayList<>();
-    private List<Long> reserves = new ArrayList<>();
+    private Set<Long> squad = new LinkedHashSet<>();
+    private Set<Long> reserves = new LinkedHashSet<>();
 
     protected Match() {
         this.addingDate = Instant.now();
@@ -83,11 +83,53 @@ public class Match {
         return details;
     }
 
-    public List<Long> getSquad() {
+    public Set<Long> getSquad() {
         return squad;
     }
 
-    public List<Long> getReserves() {
+    public Set<Long> getReserves() {
         return reserves;
     }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setAddingDate(Instant addingDate) {
+        this.addingDate = addingDate;
+    }
+
+    public void setPlace(String place) {
+        this.place = place;
+    }
+
+    public void setMatchDate(Instant matchDate) {
+        this.matchDate = matchDate;
+    }
+
+    public void setMaxPlayers(Integer maxPlayers) {
+        this.maxPlayers = maxPlayers;
+    }
+
+    public void setMinPlayers(Integer minPlayers) {
+        this.minPlayers = minPlayers;
+    }
+
+    public void setCost(Integer cost) {
+        this.cost = cost;
+    }
+
+    public void setDetails(Set<Details> details) {
+        this.details = details;
+    }
+
+    public void setSquad(Set<Long> squad) {
+        this.squad = squad;
+    }
+
+    public void setReserves(Set<Long> reserves) {
+        this.reserves = reserves;
+    }
 }
+
+
