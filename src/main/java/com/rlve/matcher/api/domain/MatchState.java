@@ -23,9 +23,9 @@ public class MatchState {
         OK, IN_SQUAD, IN_RESERVES, OK_RESERVES, OK_REMOVED, NO_USER;
     }
 
-    static public String getMessage(SIGN state) {
-        String message = "Wrong state.";
-        switch (state) {
+    public String getMessage() {
+        String message = "Unknown state.";
+        switch (this.getSignState()) {
             case OK:
                 message = "User signed.";
                 break;

@@ -23,7 +23,7 @@ public class SignService {
         this.detailsService = detailsService;
     }
 
-    public void signUserToMatch(Long userId, Long matchId) {
+    public MatchState signUserToMatch(Long userId, Long matchId) {
         User user = userService.findById(userId);
         Match match = matchService.findById(matchId);
 
@@ -52,16 +52,21 @@ public class SignService {
 
         if (details.getId() == null)
             detailsService.save(details);
+
+        return status;
     }
 
-    public void removeUserFromMatch(Long userId, Long matchId) {
+    public MatchState removeUserFromMatch(Long userId, Long matchId) {
         User user = userService.findById(userId);
         Match match = matchService.findById(matchId);
 
         Optional<Details> details = detailsService.findByUserIdAndMatchId(user.getId(), match.getId());
 
+        MatchState status = new MatchState();
+
         if (details.isPresent()) {
             match.getDetails().remove(details.get());
+            status.setSignState(MatchState.SIGN.OK_REMOVED);
 
             if (details.get().getInSquad()) {
                 match.getSquad().remove(userId);
@@ -79,5 +84,7 @@ public class SignService {
 
             matchService.save(match);
         }
+
+        return status;
     }
 }

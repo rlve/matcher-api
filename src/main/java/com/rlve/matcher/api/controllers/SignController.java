@@ -1,7 +1,10 @@
 package com.rlve.matcher.api.controllers;
 
+import com.rlve.matcher.api.domain.MatchState;
+import com.rlve.matcher.api.exceptions.SquadException;
 import com.rlve.matcher.api.services.SignService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,31 +18,25 @@ public class SignController {
         this.signService = signService;
     }
 
+    @GetMapping("/sign/user/{userId}/match/{matchId}")
+    public ResponseEntity<Object> signUserToMatch(@PathVariable Long userId, @PathVariable Long matchId ){
+        MatchState result = signService.signUserToMatch(userId, matchId);
+        String message = result.getMessage();
 
-    @GetMapping("/custom")
-    public void Custom(){
-        signService.signUserToMatch(111L,128L);
-        signService.signUserToMatch(116L,128L);
-        signService.signUserToMatch(121L,128L);
+        if (result.getSignState() == MatchState.SIGN.IN_RESERVES || result.getSignState() == MatchState.SIGN.IN_SQUAD ) {
+            throw new SquadException(String.format("%s id: %s", message, userId));
+        }
+
+        return ResponseEntity.ok().body(message);
+
     }
 
-    @GetMapping("/custom2")
-    public void Custom2(){
-        signService.removeUserFromMatch(111L,128L);
+    @GetMapping("/remove/user/{userId}/match/{matchId}")
+    public ResponseEntity<Object> removeUserFromMatch(@PathVariable Long userId, @PathVariable Long matchId ){
+        MatchState result = signService.removeUserFromMatch(userId, matchId);
+
+        String message = result.getMessage();
+
+        return ResponseEntity.ok().body(message);
     }
-
-    @GetMapping("/custom3")
-    public void Custom3(){
-        signService.removeUserFromMatch(116L,128L);
-    }
-
-    @GetMapping("/custom4")
-    public void Custom4(){
-        signService.removeUserFromMatch(121L,128L);
-    }
-
-//    @PostMapping("/matches/{id}/sign/{userId}")
-//    public ResponseEntity<Object> signUser(@PathVariable Long id, @PathVariable Long userId) {
-
-//    }
 }
