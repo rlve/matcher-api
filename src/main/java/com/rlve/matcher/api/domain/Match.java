@@ -37,8 +37,8 @@ public class Match {
     @Relationship(type = "PLAYED_IN", direction = Relationship.INCOMING)
     private Set<Details> details = new HashSet<>();
 
-    private Set<Long> squad = new LinkedHashSet<>();
-    private Set<Long> reserves = new LinkedHashSet<>();
+    private List<Long> squad = new ArrayList<>();
+    private List<Long> reserves = new ArrayList<>();
 
     protected Match() {
         this.addingDate = Instant.now();
@@ -83,11 +83,11 @@ public class Match {
         return details;
     }
 
-    public Set<Long> getSquad() {
+    public List<Long> getSquad() {
         return squad;
     }
 
-    public Set<Long> getReserves() {
+    public List<Long> getReserves() {
         return reserves;
     }
 
@@ -123,11 +123,11 @@ public class Match {
         this.details = details;
     }
 
-    public void setSquad(Set<Long> squad) {
+    public void setSquad(List<Long> squad) {
         this.squad = squad;
     }
 
-    public void setReserves(Set<Long> reserves) {
+    public void setReserves(List<Long> reserves) {
         this.reserves = reserves;
     }
 }

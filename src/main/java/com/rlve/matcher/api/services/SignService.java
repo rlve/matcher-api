@@ -1,9 +1,6 @@
 package com.rlve.matcher.api.services;
 
-import com.rlve.matcher.api.domain.Details;
-import com.rlve.matcher.api.domain.Match;
-import com.rlve.matcher.api.domain.MatchState;
-import com.rlve.matcher.api.domain.User;
+import com.rlve.matcher.api.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -73,9 +70,16 @@ public class SignService {
 
                 if (match.getSquad().size() < match.getMaxPlayers()) {
                     if (match.getReserves().size() > 0) {
-                        Long fromReserves = match.getReserves().iterator().next();
+                        Long fromReserves = match.getReserves().get(0);
+
                         match.getSquad().add(fromReserves);
                         match.getReserves().remove(fromReserves);
+
+                        Details detailsFromReserves = detailsService.findByUserIdAndMatchId(fromReserves, match.getId())
+                                .orElseThrow();
+
+                        detailsFromReserves.setInReserves(Boolean.FALSE);
+                        detailsFromReserves.setInSquad(Boolean.TRUE);
                     }
                 }
             } else {

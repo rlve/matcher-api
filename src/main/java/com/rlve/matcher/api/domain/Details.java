@@ -1,7 +1,6 @@
 package com.rlve.matcher.api.domain;
 
 import org.neo4j.ogm.annotation.*;
-import org.springframework.data.annotation.CreatedDate;
 
 import java.time.Instant;
 
@@ -28,9 +27,6 @@ public class Details {
     public Details() {
 
     }
-
-
-
 
     public Details(Match match, User user) {
         this.match = match;
