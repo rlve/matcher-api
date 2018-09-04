@@ -1,33 +1,28 @@
 package com.rlve.matcher.api.domain;
 
-import lombok.Data;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.rest.core.config.Projection;
 
-import javax.validation.constraints.Future;
-import javax.validation.constraints.Size;
-import java.time.ZonedDateTime;
-import java.util.UUID;
+import java.time.Instant;
 
-@Data
-public class DetailsEnriched {
-    private UUID detailsId;
-    private UUID matchId;
-    private UUID userId;
+@Projection(name = "enrichedDetails", types = { Details.class })
+public interface DetailsEnriched {
 
-    private Boolean userPresent;
-    private Boolean userPaid;
+    @Value("#{target.match.place}")
+    String getMatchPlace();
 
-    private String userName;
-    private String matchPlace;
-    private ZonedDateTime matchDate;
+    @Value("#{target.match.matchDate}")
+    Instant getMatchDate();
 
-    public DetailsEnriched() {
+    @Value("#{target.match.cost}")
+    Instant getMatchCost();
 
-    }
+    @Value("#{target.user.name}")
+    String getUserName();
 
-    public DetailsEnriched(UUID id, UUID matchId, UUID userId) {
-        this.detailsId = id;
-        this.matchId = matchId;
-        this.userId = userId;
-    }
+    Boolean getInSquad();
+    Boolean getInReserves();
+    Boolean getUserPresent();
+    Boolean getUserPaid();
 
 }
