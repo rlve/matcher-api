@@ -45,10 +45,10 @@ public class UserServiceTest {
                         .filter(user1 -> user1.getName().equals(name))
                         .findAny();
 
-        Optional<User> expectedUser = userRepository.findById(createdUserFromDb.orElseThrow().getId());
+        User expectedUser = userRepository.findById(createdUserFromDb.orElseThrow().getId()).orElseThrow();
 
-        assertEquals(createdUserFromDb, expectedUser);
-        assertEquals(createdUserFromDb.get().getName(), expectedUser.get().getName());
-        assertEquals(createdUserFromDb.get().getId(), expectedUser.get().getId());
+        assertEquals(createdUserFromDb.get(), expectedUser);
+        assertEquals(createdUserFromDb.get().getName(), expectedUser.getName());
+        assertEquals(createdUserFromDb.get().getId(), expectedUser.getId());
     }
 }
