@@ -37,18 +37,14 @@ public class UserServiceTest {
     public void findById() {
         String name = "TESTED";
         User user = new User(name);
-        userRepository.save(user);
+        user = userRepository.save(user);
 
-        Iterable<User> foundUsers = userRepository.findAll();
-        Optional<User> createdUserFromDb =
-                StreamSupport.stream(foundUsers.spliterator(), false)
-                        .filter(user1 -> user1.getName().equals(name))
-                        .findAny();
+        User userFromDb = userRepository.findById(user.getId()).orElseThrow();
 
-        User expectedUser = userRepository.findById(createdUserFromDb.orElseThrow().getId()).orElseThrow();
-
-        assertEquals(createdUserFromDb.get(), expectedUser);
-        assertEquals(createdUserFromDb.get().getName(), expectedUser.getName());
-        assertEquals(createdUserFromDb.get().getId(), expectedUser.getId());
+        assertEquals(userFromDb, user);
+        assertEquals(userFromDb.getName(), user.getName());
+        assertEquals(userFromDb.getId(), user.getId());
     }
+
+
 }
