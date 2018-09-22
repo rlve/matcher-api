@@ -23,8 +23,8 @@ public class DetailsService {
     }
 
     @Transactional
-    public void save(Details details){
-        detailsRepository.save(details);
+    public Details save(Details details){
+        return detailsRepository.save(details);
     }
 
 }

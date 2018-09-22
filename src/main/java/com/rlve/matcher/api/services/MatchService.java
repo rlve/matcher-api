@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Set;
+
 @Service
 public class MatchService {
     private final MatchRepository matchRepository;
@@ -17,8 +19,8 @@ public class MatchService {
     }
 
     @Transactional(readOnly = true)
-    public Match findByPlace(String place) {
-        return matchRepository.findByPlace(place);
+    public Set<Match> findAllByPlace(String place) {
+        return matchRepository.findAllByPlace(place);
     }
 
     @Transactional
@@ -27,8 +29,8 @@ public class MatchService {
     }
 
     @Transactional
-    public void save(Match match){
-        matchRepository.save(match);
+    public Match save(Match match){
+        return matchRepository.save(match);
     }
 
 }

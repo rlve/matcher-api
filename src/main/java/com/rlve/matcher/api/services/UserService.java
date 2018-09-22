@@ -1,5 +1,6 @@
 package com.rlve.matcher.api.services;
 
+import com.rlve.matcher.api.domain.Match;
 import com.rlve.matcher.api.domain.User;
 import com.rlve.matcher.api.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,4 +29,8 @@ public class UserService {
         return userRepository.findById(id).orElseThrow();
     }
 
+    @Transactional
+    public User save(User User){
+        return userRepository.save(User);
+    }
 }
