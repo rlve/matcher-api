@@ -86,6 +86,13 @@
 			<version>${neo4j-ogm.version}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.unitils</groupId>
+			<artifactId>unitils-core</artifactId>
+			<version>3.4.2</version>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
 
 	
