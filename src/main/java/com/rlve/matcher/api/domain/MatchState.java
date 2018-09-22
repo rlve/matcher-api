@@ -20,7 +20,7 @@ public class MatchState {
     }
 
     public enum SIGN {
-        OK, IN_SQUAD, IN_RESERVES, OK_RESERVES, OK_REMOVED, NO_USER;
+        OK, IN_SQUAD, IN_RESERVES, OK_RESERVES, OK_REMOVED, NO_USER
     }
 
     public String getMessage() {

@@ -35,6 +35,22 @@ public class User {
         this.addingDate = Instant.now();
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAddingDate(Instant addingDate) {
+        this.addingDate = addingDate;
+    }
+
+    public void setDetails(Set<Details> details) {
+        this.details = details;
+    }
+
     public User(String name) {
         this.name = name;
         this.addingDate = Instant.now();
