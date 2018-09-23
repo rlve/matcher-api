@@ -1,13 +1,11 @@
 package com.rlve.matcher.api.services;
 
-import com.rlve.matcher.api.domain.Match;
 import com.rlve.matcher.api.domain.User;
 import com.rlve.matcher.api.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
 import java.util.Set;
 
 @Service

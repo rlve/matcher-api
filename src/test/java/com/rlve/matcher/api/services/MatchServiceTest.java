@@ -9,9 +9,7 @@ import org.springframework.boot.test.autoconfigure.data.neo4j.DataNeo4jTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.Instant;
-import java.util.Optional;
 import java.util.Set;
-import java.util.stream.StreamSupport;
 
 import static org.junit.Assert.*;
 
