@@ -1,7 +1,7 @@
 package com.rlve.matcher.api.domain;
 
 public class MatchState {
-    private SIGN signState;
+    private SIGN signState = SIGN.UNDEFINED;
 
     public MatchState() {
     }
@@ -20,7 +20,7 @@ public class MatchState {
     }
 
     public enum SIGN {
-        OK, IN_SQUAD, IN_RESERVES, OK_RESERVES, OK_REMOVED, NO_USER
+        OK, IN_SQUAD, IN_RESERVES, OK_RESERVES, OK_REMOVED, NO_USER, UNDEFINED
     }
 
     public String getMessage() {
@@ -48,6 +48,10 @@ public class MatchState {
 
             case NO_USER:
                 message = "No user signed.";
+                break;
+
+            case UNDEFINED:
+                message = "Something went wrong.";
                 break;
 
             default:

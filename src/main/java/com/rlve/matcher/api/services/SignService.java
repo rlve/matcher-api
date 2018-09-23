@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class SignService {
@@ -29,11 +28,11 @@ public class SignService {
 
         MatchState status = new MatchState();
 
-        if (match.getSquad().contains(userId)) {
+        if (match.getSquad().contains(userId) && details.getInSquad()) {
             status.setSignState(MatchState.SIGN.IN_SQUAD);
         } else {
             if (match.getSquad().size() >= match.getMaxPlayers()) {
-                if (match.getReserves().contains(userId)) {
+                if (match.getReserves().contains(userId) && details.getInReserves()) {
                     status.setSignState(MatchState.SIGN.IN_RESERVES);
                 } else {
                     status.setSignState(MatchState.SIGN.OK_RESERVES);
@@ -60,6 +59,7 @@ public class SignService {
         Optional<Details> details = detailsService.findByUserIdAndMatchId(user.getId(), match.getId());
 
         MatchState status = new MatchState();
+        status.setSignState(MatchState.SIGN.NO_USER);
 
         if (details.isPresent()) {
             match.getDetails().remove(details.get());
